@@ -96,9 +96,6 @@ curl command inside it with your GitHub username first.
 The page ships with 12 themes in a dropdown. Change `data-theme` on the `<html>` tag to set
 the default.
 
-The masthead draws `logo.svg` if it's present and falls back to a built-in mark that follows
-the active theme. Replace `logo.svg` to change it - [`LOGO-PROMPTS.md`](LOGO-PROMPTS.md) has
-ready-made prompts for generating one.
 
 ---
 
