@@ -4,14 +4,14 @@
 
 <h1 align="center">Threadscope</h1>
 
-<p align="center"><strong>Measure which settings run local AI models fastest on your machine — then use them.</strong></p>
+<p align="center"><strong>Measure which settings run local AI models fastest on your machine - then use them.</strong></p>
 
 Everyone chasing better local LLM performance buys something: a faster GPU, more RAM, a
 newer CPU, a smaller quantized model. Almost nobody checks whether their machine is
 configured correctly first. That part is free.
 
 Most inference engines start one thread per logical CPU by default. On a machine reporting
-16 threads but holding only 8 real cores, the extra 8 don't add capacity — they queue behind
+16 threads but holding only 8 real cores, the extra 8 don't add capacity - they queue behind
 the first 8 and compete for the same memory bandwidth. On the machine this was built
 against, correcting that made runs **32% faster while burning 2.4× less CPU**. Same
 hardware, same model, same weights. Only settings.
@@ -35,17 +35,17 @@ Two pieces, because a browser cannot measure a machine:
 
 | File | Purpose |
 |---|---|
-| `threadscope.sh` | The measurement script — run this |
-| `index.html` | The analyzer page — self-contained, host anywhere |
+| `threadscope.sh` | The measurement script - run this |
+| `index.html` | The analyzer page - self-contained, host anywhere |
 | `logo.svg` | Logo, used by the page and this README |
 | `LOGO-PROMPTS.md` | Prompts for generating a replacement logo |
 | `LICENSE` | MIT |
 | `DISCLAIMER.md` | Full liability notice |
 
-### Step 1 — measure
+### Step 1 - measure
 
 ```bash
-curl -fsSLO https://raw.githubusercontent.com/YOUR-USERNAME/threadscope/main/threadscope.sh
+curl -fsSLO https://raw.githubusercontent.com/nikleotide/threadscope/main/threadscope.sh
 chmod +x threadscope.sh
 ./threadscope.sh --build --fetch medium
 ```
@@ -71,7 +71,7 @@ Copies of the most recent run are also left in the working directory as `report.
 `tuning_recommendations.sh`, so the instructions below always point at the latest result.
 Use `--tag` to label a run and `--outdir` to archive somewhere else.
 
-### Step 2 — read the result
+### Step 2 - read the result
 
 Open `index.html` (locally or from your hosting) and drop `report.json` onto it. You get the
 sweep curve, a default-vs-best comparison, an efficiency plot, and a plain-language
@@ -79,7 +79,7 @@ explanation of what the numbers mean.
 
 Everything happens in your browser. Nothing is uploaded.
 
-### Step 3 — apply it
+### Step 3 - apply it
 
 ```bash
 ./tuning_recommendations.sh              # show what would change, change nothing
@@ -97,7 +97,7 @@ The page ships with 12 themes in a dropdown. Change `data-theme` on the `<html>`
 the default.
 
 The masthead draws `logo.svg` if it's present and falls back to a built-in mark that follows
-the active theme. Replace `logo.svg` to change it — [`LOGO-PROMPTS.md`](LOGO-PROMPTS.md) has
+the active theme. Replace `logo.svg` to change it - [`LOGO-PROMPTS.md`](LOGO-PROMPTS.md) has
 ready-made prompts for generating one.
 
 ---
@@ -154,17 +154,17 @@ pinning do not exist there and are reported as `n/a`.
 
 Four numbers per timed run:
 
-- **Wall clock** — how long the run actually took
-- **User CPU time** — processor seconds spent computing
-- **System CPU time** — processor seconds spent in the kernel
-- **Tokens per second** — read from llama.cpp's own output, or computed as tokens ÷ wall
+- **Wall clock** - how long the run actually took
+- **User CPU time** - processor seconds spent computing
+- **System CPU time** - processor seconds spent in the kernel
+- **Tokens per second** - read from llama.cpp's own output, or computed as tokens ÷ wall
   time when the engine doesn't report it
 
 Configurations timed, on a 16-thread / 8-core machine as an example:
 
 - One warm-up run, discarded. This pulls the model off disk so that one-off I/O doesn't
   pollute the first real measurement.
-- Unpinned at **1, 2, 4, 8, 16** threads — powers of two, plus your physical and logical core
+- Unpinned at **1, 2, 4, 8, 16** threads - powers of two, plus your physical and logical core
   counts, deduplicated and sorted.
 - Pinned at the winning thread count, and at your physical core count if that differs.
 
@@ -172,13 +172,13 @@ About seven runs in total. `--quick` roughly halves it.
 
 ## What it recommends
 
-**Measured** — the tool timed both options and picked the winner:
+**Measured** - the tool timed both options and picked the winner:
 
-1. **Thread count** — `-t N`
-2. **CPU pinning** — `taskset -c 0,1,2,…`, recommended only if the pinned run actually beat
+1. **Thread count** - `-t N`
+2. **CPU pinning** - `taskset -c 0,1,2,…`, recommended only if the pinned run actually beat
    the unpinned run at the same thread count
 
-**Inspected, not measured** — it read your current value and suggested the generally-faster
+**Inspected, not measured** - it read your current value and suggested the generally-faster
 one without testing whether it helps on your hardware:
 
 3. **Transparent huge pages** → `always`
@@ -194,7 +194,7 @@ tool, and it is stated in the header of every generated script.
 
 ## What `--apply` actually changes
 
-Only items 3 and 4 above. Items 1 and 2 are not system changes at all — they are flags on
+Only items 3 and 4 above. Items 1 and 2 are not system changes at all - they are flags on
 your own command line.
 
 | Setting | Change | Needs | Reverts |
@@ -210,12 +210,12 @@ behave, not a fault.
 
 ## What it writes to disk
 
-- `runs/report-<timestamp>[-<tag>]-<model>.json` — the measurements, archived
-- `runs/report-<timestamp>[-<tag>]-<model>.tuning.sh` — the suggestions, archived
-- `report.json` and `tuning_recommendations.sh` — copies of the most recent run
-- `./llama.cpp/` — only with `--build`
-- `./models/` — only with `--fetch` or `--fetch-url`
-- `~/.threadscope-revert` — only when you run `--apply`
+- `runs/report-<timestamp>[-<tag>]-<model>.json` - the measurements, archived
+- `runs/report-<timestamp>[-<tag>]-<model>.tuning.sh` - the suggestions, archived
+- `report.json` and `tuning_recommendations.sh` - copies of the most recent run
+- `./llama.cpp/` - only with `--build`
+- `./models/` - only with `--fetch` or `--fetch-url`
+- `~/.threadscope-revert` - only when you run `--apply`
 
 The only `rm` commands anywhere in the script delete its own temporary log, its own revert
 file, and a partial download that failed.
@@ -232,7 +232,7 @@ the bootloader. It never transmits anything anywhere.
 
 **Huge pages and governor are assumed, not tested.** The governor could be measured properly
 without much work. Huge pages would need `sudo` partway through a run, which would break the
-no-root property that makes this safe to run casually — so they stay labelled as
+no-root property that makes this safe to run casually - so they stay labelled as
 suggestions rather than findings.
 
 **One model at a time.** The optimum can shift with model size and quantization. If you run
@@ -243,12 +243,12 @@ and these settings have little effect.
 
 **Not a hardware fix.** The ceiling on CPU inference is memory bandwidth, which no setting
 can raise. What this closes is the gap between how your machine is configured and how it
-could be — often substantial, and always free.
+could be - often substantial, and always free.
 
 ## Reporting problems
 
 Open an issue and attach `report.json` along with your hardware and OS. If the JSON itself
-looks malformed, re-run the script — it validates its own output and will say so.
+looks malformed, re-run the script - it validates its own output and will say so.
 
 ---
 
@@ -262,7 +262,7 @@ data loss, downtime, hardware fault or other harm arising from its use. The full
 [`DISCLAIMER.md`](DISCLAIMER.md).
 
 Threadscope runs [llama.cpp](https://github.com/ggml-org/llama.cpp) (MIT) and can download
-model files from third-party hosts. Those carry their own licences and terms — model weights
+model files from third-party hosts. Those carry their own licences and terms - model weights
 in particular may restrict commercial use. Check the licence of any model you use.
 
 ---
