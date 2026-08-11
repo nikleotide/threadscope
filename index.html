@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Threadscope — find your machine's fastest inference settings</title>
+<title>Threadscope - find your machine's fastest inference settings</title>
 <meta name="description" content="Measure which thread count and CPU settings run local AI models fastest on your own hardware. Free, open source, no root.">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -220,15 +220,15 @@ chmod +x threadscope.sh
 <section id="results" hidden>
   <div class="verdict">
     <div class="vk">Result</div>
-    <div class="vmain" id="vMain">—</div>
+    <div class="vmain" id="vMain">-</div>
     <div class="vsay" id="vSay"></div>
   </div>
 
 
   <div class="tiles">
-    <div class="tile"><div class="k">Time per run</div><div class="v c1" id="tTime">—</div><div class="s" id="tTimeS"></div></div>
-    <div class="tile"><div class="k">CPU work</div><div class="v c2" id="tCpu">—</div><div class="s" id="tCpuS"></div></div>
-    <div class="tile"><div class="k">Throughput</div><div class="v c3" id="tTps">—</div><div class="s" id="tTpsS"></div></div>
+    <div class="tile"><div class="k">Time per run</div><div class="v c1" id="tTime">-</div><div class="s" id="tTimeS"></div></div>
+    <div class="tile"><div class="k">CPU work</div><div class="v c2" id="tCpu">-</div><div class="s" id="tCpuS"></div></div>
+    <div class="tile"><div class="k">Throughput</div><div class="v c3" id="tTps">-</div><div class="s" id="tTpsS"></div></div>
   </div>
 
   <div class="frame" style="margin-bottom:18px">
@@ -258,8 +258,8 @@ chmod +x threadscope.sh
   <div class="disc">
     <h3>Read this before you download</h3>
     <p><b>No warranty.</b> Threadscope measures and suggests. You run it at your own risk, and the author accepts no liability for anything that happens to your system.</p>
-    <p>The script changes nothing on its own — run it bare and it only prints. Nothing deletes files, stops services, or installs anything. The two system settings it can change reset on reboot, and <span class="ic">--revert</span> undoes them immediately.</p>
-    <p class="kind">If it helped — do something kind for someone who'll never know it was you. That's the whole price.</p>
+    <p>The script changes nothing on its own - run it bare and it only prints. Nothing deletes files, stops services, or installs anything. The two system settings it can change reset on reboot, and <span class="ic">--revert</span> undoes them immediately.</p>
+    <p class="kind">If it helped - do something kind for someone who'll never know it was you. That's the whole price.</p>
   </div>
   <div class="row"><button class="btn" id="dl">Download tuning_recommendations.sh</button></div>
 
@@ -273,7 +273,7 @@ chmod +x threadscope.sh
 
 <footer>
   <div class="fr">
-    <div style="max-width:52ch">Measures CPU inference. If your model runs fully on a GPU, these settings barely matter. Results are specific to one machine and one model. No warranty — you run this at your own risk.</div>
+    <div style="max-width:52ch">Measures CPU inference. If your model runs fully on a GPU, these settings barely matter. Results are specific to one machine and one model. No warranty - you run this at your own risk.</div>
     <div class="cr">© 2026 Hamid Nikbakht · MIT</div>
   </div>
 </footer>
@@ -428,7 +428,7 @@ function tuningScript(d,best){
 function explainText(d,base,best,pct){
   const h=d.host, secs=base.wall-best.wall, cpuSecs=base.cpu-best.cpu, extra=h.logical-h.physical;
   if(pct<2){
-    return `<p class="lead">If you tune these settings, nothing changes — because this machine is already
+    return `<p class="lead">If you tune these settings, nothing changes - because this machine is already
       set up correctly. It ran fastest at <b>${best.threads} threads</b>, which is what your engine
       already uses by default.</p>
       <p>That's worth knowing. Most machines leave something on the table; yours doesn't.</p>
@@ -437,13 +437,13 @@ function explainText(d,base,best,pct){
   }
   let why = h.logical>h.physical
     ? `Your engine currently starts <b>${h.logical} threads</b>, but the machine only has
-       <b>${h.physical} real cores</b>. The extra ${extra} don't add capacity — they queue up behind the
+       <b>${h.physical} real cores</b>. The extra ${extra} don't add capacity - they queue up behind the
        first ${h.physical} and compete for the same memory. Using ${best.threads} removes that fight.`
     : `Above <b>${best.threads} threads</b> the cores spend more time waiting on memory than computing,
        so adding more of them makes the run slower rather than faster.`;
   if(best.pinned) why += ` Pinning them to specific cores stops the scheduler shuffling work around mid-run.`;
   return `<p class="lead">If you tune these settings, the same machine running the same model would
-      answer <b>about ${secs.toFixed(1)} seconds sooner</b> on a run like this one — and get there using
+      answer <b>about ${secs.toFixed(1)} seconds sooner</b> on a run like this one - and get there using
       <b>${cpuSecs.toFixed(0)} seconds less processor time</b>. No new hardware, no different model,
       no software to buy. Just settings.</p>
     <p>${why}</p>
@@ -451,7 +451,7 @@ function explainText(d,base,best,pct){
       means less heat, longer battery life on a laptop, and enough headroom left over to keep working
       while a model is running.</p>
     <p class="easy">I've made this easy for you. Download the tuning script below and run it on your
-      machine — it prints the exact commands for your hardware, changes nothing by itself, and every
+      machine - it prints the exact commands for your hardware, changes nothing by itself, and every
       setting it touches resets on reboot.</p>
     <p class="warn">Warning: no warranty of any kind. You run it at your own risk, and the author accepts
       no liability for anything that happens to your system.</p>`;
@@ -553,7 +553,7 @@ function load(text){
     if(m){const i=+m[1]; where="\n\nAround character "+i+":\n"+JSON.stringify(r.err.t.slice(Math.max(0,i-40),i+40));}
     msg.textContent="Couldn't read that as JSON."+where+
       "\n\nMake sure it's report.json, not the text the script printed to the terminal."+
-      "\nIf report.json itself looks wrong, re-run threadscope.sh — it checks its own output.";
+      "\nIf report.json itself looks wrong, re-run threadscope.sh - it checks its own output.";
     return;
   }
   const d=r.data;
