@@ -593,8 +593,7 @@ document.addEventListener("click",e=>{
 });
 redraw();
 
-/* The inline mark follows the active theme. If the repo has a real logo file,
-   prefer it — but only if it actually loads, so the page never shows a broken image. */
+
 (function(){
   const slot=$("logo");
   ["logo.svg","logo.png"].forEach(src=>{
