@@ -264,5 +264,4 @@ in particular may restrict commercial use. Check the licence of any model you us
 
 ---
 
-If it helped you: do something kind for someone who will never know it was you. That is the
-whole price.
+### If this tool helped you: do something kind for someone else. That is the whole price.
